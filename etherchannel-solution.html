@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EtherChannel (LACP) solution · CCNA Lab</title><style>
+:root{--bg:#f5f6fb;--fg:#161a2b;--mut:#5d6480;--card:#fff;--bd:#e1e4f0;--ac:#5b5bf0;--ac2:#14b8a6;--ok:#16a34a;--bad:#dc2626;--code:#eef0fb;--pre:#10142a;--pf:#c9d1ff}
+@media(prefers-color-scheme:dark){:root{--bg:#0d1020;--fg:#e8eaf6;--mut:#9aa1c4;--card:#161a30;--bd:#262c4b;--ac:#8b8bff;--ac2:#2dd4bf;--code:#1d2240;--pre:#070a18}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px/1.65 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}a{color:var(--ac)}
+.bar{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--bd)}.bar .in{max-width:900px;margin:auto;padding:12px 20px;display:flex;justify-content:space-between;font-weight:700}.bar a{text-decoration:none;color:var(--fg)}
+.pg{height:3px;background:var(--bd)}.pg i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--ac),var(--ac2));transition:width .4s}
+main{max-width:900px;margin:auto;padding:32px 20px 80px}.hero{padding:44px 32px;border-radius:24px;color:#fff;background:linear-gradient(135deg,#4338ca,#0ea5a4);margin-bottom:28px}.hero h1{font-size:clamp(28px,5vw,44px);line-height:1.1;margin:0 0 10px}.hero p{margin:0;opacity:.92;max-width:600px}
+h1.t{font-size:clamp(26px,4vw,36px);line-height:1.15;margin:.2em 0 .4em}h2{font-size:19px;margin:30px 0 10px}h3{font-size:16px;margin:20px 0 6px}
+.tag{font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--ac)}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:16px;padding:16px 22px;margin:14px 0}.goal{border-left:5px solid var(--ac2)}.pre{border-left:5px solid #f59e0b}
+ol,ul{padding-left:22px}li{margin:8px 0}ol.tk>li::marker{font-weight:700;color:var(--ac)}
+details{background:var(--card);border:1px solid var(--bd);border-radius:12px;padding:10px 16px;margin:8px 0}summary{cursor:pointer;font-weight:600;color:var(--ac)}details p{margin:8px 0 2px;color:var(--mut)}
+code{background:var(--code);padding:2px 6px;border-radius:6px;font:13.5px ui-monospace,Consolas,monospace}
+pre{background:var(--pre);color:var(--pf);padding:14px 16px;border-radius:12px;overflow-x:auto;font:13px/1.55 ui-monospace,Consolas,monospace;margin:8px 0}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}.st{display:block;text-decoration:none;color:var(--fg);background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:14px 16px}.st:hover{border-color:var(--ac)}.st small{color:var(--mut);display:block}.st.lock{opacity:.5;pointer-events:none}.st.done{border-color:var(--ok)}
+.wrap{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:14px}th,td{border-bottom:1px solid var(--bd);padding:8px 10px;text-align:left;vertical-align:top}th{color:var(--mut);font-size:12px;text-transform:uppercase}
+.btn{display:inline-block;background:linear-gradient(135deg,var(--ac),var(--ac2));color:#fff;border:0;border-radius:12px;padding:11px 20px;font:600 15px system-ui;cursor:pointer;text-decoration:none;margin:6px 8px 6px 0}.btn.alt{background:var(--card);color:var(--ac);border:1px solid var(--ac)}
+input{width:100%;padding:8px 10px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--fg);font:14px ui-monospace,Consolas,monospace}input.ok{border-color:var(--ok)}input.bad{border-color:var(--bad)}
+.msg{font-weight:600;margin:12px 0}nav.pn{display:flex;justify-content:space-between;margin-top:36px;font-weight:600}nav.pn a{text-decoration:none}
+</style><script>const PAGE="etherchannel-solution",TOTAL=14;let M=[];try{M=JSON.parse(localStorage.getItem('ccna_done')||'[]')}catch(e){}
+const D=()=>M;function mark(s){if(!M.includes(s)){M.push(s);try{localStorage.setItem('ccna_done',JSON.stringify(M))}catch(e){}}}
+function prog(){const p=document.getElementById('pgb');if(p)p.style.width=Math.round(M.length/TOTAL*100)+'%'}
+if(PAGE&&PAGE.indexOf('subnetting')!==0&&!M.includes('subnetting'))location.replace('subnetting.html?locked=1');
+function done(b){mark(PAGE);prog();b.textContent='✓ Step complete';b.disabled=true}
+addEventListener('DOMContentLoaded',()=>{prog();const b=document.getElementById('dn');if(b&&M.includes(PAGE)){b.textContent='✓ Step complete';b.disabled=true}
+if(PAGE==='subnetting')sync()});
+function sync(){const n=document.querySelector('nav.pn span:last-child');if(n)n.style.display=M.includes('subnetting')?'':'none'}</script></head><body><div class="bar"><div class="in"><a href="index.html">⚡ CCNA Capstone Lab</a><span style="font-size:13px;color:var(--mut);display:flex;gap:14px;align-items:center">Solution<a href="ip-table.html" style="color:var(--ac);text-decoration:none;font-weight:700">IP table</a><a href="grand-lab.pkt" download style="color:var(--ac);text-decoration:none;font-weight:700">⬇ Download lab (.pkt)</a></span></div><div class="pg"><i id="pgb"></i></div></div><main><div class="tag">Solution</div><h1 class="t">EtherChannel (LACP) – full solution</h1><div class="card">Try the hints first. Type the commands yourself rather than pasting, because that is how they stick.</div>
+<h2>Both switches (same commands on SW1 and SW2)</h2><pre>interface range fa0/1-2
+ shutdown
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,99
+ switchport nonegotiate
+ channel-group 1 mode active
+ no shutdown
+interface port-channel 1
+ switchport mode trunk
+ switchport trunk native vlan 999
+ switchport trunk allowed vlan 10,20,30,99
+ switchport nonegotiate</pre>
+<p>The members get their trunk settings <i>before</i> joining the channel so they are identical, and the port-channel gets the same settings. Ports are shut down while configuring and brought up last, which avoids a temporary loop. Both sides use <code>active</code>; one side <code>active</code> and the other <code>passive</code> also works, but passive/passive never forms.</p>
+<h2>Verify</h2><pre>show etherchannel summary
+show interfaces trunk</pre><a class="btn" href="etherchannel.html">← Back to the step</a></main></body></html>

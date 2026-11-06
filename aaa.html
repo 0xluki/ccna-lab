@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>AAA with RADIUS · CCNA Lab</title>
+    <style>
+      :root {
+        --bg: #f5f6fb;
+        --fg: #161a2b;
+        --mut: #5d6480;
+        --card: #fff;
+        --bd: #e1e4f0;
+        --ac: #5b5bf0;
+        --ac2: #14b8a6;
+        --ok: #16a34a;
+        --bad: #dc2626;
+        --code: #eef0fb;
+        --pre: #10142a;
+        --pf: #c9d1ff;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root {
+          --bg: #0d1020;
+          --fg: #e8eaf6;
+          --mut: #9aa1c4;
+          --card: #161a30;
+          --bd: #262c4b;
+          --ac: #8b8bff;
+          --ac2: #2dd4bf;
+          --code: #1d2240;
+          --pre: #070a18;
+        }
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          16px/1.65 system-ui,
+          -apple-system,
+          Segoe UI,
+          Roboto,
+          sans-serif;
+      }
+      a {
+        color: var(--ac);
+      }
+      .bar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: var(--bg);
+        border-bottom: 1px solid var(--bd);
+      }
+      .bar .in {
+        max-width: 900px;
+        margin: auto;
+        padding: 12px 20px;
+        display: flex;
+        justify-content: space-between;
+        font-weight: 700;
+      }
+      .bar a {
+        text-decoration: none;
+        color: var(--fg);
+      }
+      .pg {
+        height: 3px;
+        background: var(--bd);
+      }
+      .pg i {
+        display: block;
+        height: 100%;
+        width: 0;
+        background: linear-gradient(90deg, var(--ac), var(--ac2));
+        transition: width 0.4s;
+      }
+      main {
+        max-width: 900px;
+        margin: auto;
+        padding: 32px 20px 80px;
+      }
+      .hero {
+        padding: 44px 32px;
+        border-radius: 24px;
+        color: #fff;
+        background: linear-gradient(135deg, #4338ca, #0ea5a4);
+        margin-bottom: 28px;
+      }
+      .hero h1 {
+        font-size: clamp(28px, 5vw, 44px);
+        line-height: 1.1;
+        margin: 0 0 10px;
+      }
+      .hero p {
+        margin: 0;
+        opacity: 0.92;
+        max-width: 600px;
+      }
+      h1.t {
+        font-size: clamp(26px, 4vw, 36px);
+        line-height: 1.15;
+        margin: 0.2em 0 0.4em;
+      }
+      h2 {
+        font-size: 19px;
+        margin: 30px 0 10px;
+      }
+      h3 {
+        font-size: 16px;
+        margin: 20px 0 6px;
+      }
+      .tag {
+        font-size: 12px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+        color: var(--ac);
+      }
+      .card {
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 16px;
+        padding: 16px 22px;
+        margin: 14px 0;
+      }
+      .goal {
+        border-left: 5px solid var(--ac2);
+      }
+      .pre {
+        border-left: 5px solid #f59e0b;
+      }
+      ol,
+      ul {
+        padding-left: 22px;
+      }
+      li {
+        margin: 8px 0;
+      }
+      ol.tk > li::marker {
+        font-weight: 700;
+        color: var(--ac);
+      }
+      details {
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 12px;
+        padding: 10px 16px;
+        margin: 8px 0;
+      }
+      summary {
+        cursor: pointer;
+        font-weight: 600;
+        color: var(--ac);
+      }
+      details p {
+        margin: 8px 0 2px;
+        color: var(--mut);
+      }
+      code {
+        background: var(--code);
+        padding: 2px 6px;
+        border-radius: 6px;
+        font:
+          13.5px ui-monospace,
+          Consolas,
+          monospace;
+      }
+      pre {
+        background: var(--pre);
+        color: var(--pf);
+        padding: 14px 16px;
+        border-radius: 12px;
+        overflow-x: auto;
+        font:
+          13px/1.55 ui-monospace,
+          Consolas,
+          monospace;
+        margin: 8px 0;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 12px;
+      }
+      .st {
+        display: block;
+        text-decoration: none;
+        color: var(--fg);
+        background: var(--card);
+        border: 1px solid var(--bd);
+        border-radius: 14px;
+        padding: 14px 16px;
+      }
+      .st:hover {
+        border-color: var(--ac);
+      }
+      .st small {
+        color: var(--mut);
+        display: block;
+      }
+      .st.lock {
+        opacity: 0.5;
+        pointer-events: none;
+      }
+      .st.done {
+        border-color: var(--ok);
+      }
+      .wrap {
+        overflow-x: auto;
+      }
+      table {
+        border-collapse: collapse;
+        width: 100%;
+        font-size: 14px;
+      }
+      th,
+      td {
+        border-bottom: 1px solid var(--bd);
+        padding: 8px 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+      th {
+        color: var(--mut);
+        font-size: 12px;
+        text-transform: uppercase;
+      }
+      .btn {
+        display: inline-block;
+        background: linear-gradient(135deg, var(--ac), var(--ac2));
+        color: #fff;
+        border: 0;
+        border-radius: 12px;
+        padding: 11px 20px;
+        font: 600 15px system-ui;
+        cursor: pointer;
+        text-decoration: none;
+        margin: 6px 8px 6px 0;
+      }
+      .btn.alt {
+        background: var(--card);
+        color: var(--ac);
+        border: 1px solid var(--ac);
+      }
+      input {
+        width: 100%;
+        padding: 8px 10px;
+        border: 1px solid var(--bd);
+        border-radius: 8px;
+        background: var(--bg);
+        color: var(--fg);
+        font:
+          14px ui-monospace,
+          Consolas,
+          monospace;
+      }
+      input.ok {
+        border-color: var(--ok);
+      }
+      input.bad {
+        border-color: var(--bad);
+      }
+      .msg {
+        font-weight: 600;
+        margin: 12px 0;
+      }
+      nav.pn {
+        display: flex;
+        justify-content: space-between;
+        margin-top: 36px;
+        font-weight: 600;
+      }
+      nav.pn a {
+        text-decoration: none;
+      }
+    </style>
+    <script>
+      const PAGE = "aaa",
+        TOTAL = 14;
+      let M = [];
+      try {
+        M = JSON.parse(localStorage.getItem("ccna_done") || "[]");
+      } catch (e) {}
+      const D = () => M;
+      function mark(s) {
+        if (!M.includes(s)) {
+          M.push(s);
+          try {
+            localStorage.setItem("ccna_done", JSON.stringify(M));
+          } catch (e) {}
+        }
+      }
+      function prog() {
+        const p = document.getElementById("pgb");
+        if (p) p.style.width = Math.round((M.length / TOTAL) * 100) + "%";
+      }
+      if (PAGE && PAGE.indexOf("subnetting") !== 0 && !M.includes("subnetting"))
+        location.replace("subnetting.html?locked=1");
+      function done(b) {
+        mark(PAGE);
+        prog();
+        b.textContent = "✓ Step complete";
+        b.disabled = true;
+      }
+      addEventListener("DOMContentLoaded", () => {
+        prog();
+        const b = document.getElementById("dn");
+        if (b && M.includes(PAGE)) {
+          b.textContent = "✓ Step complete";
+          b.disabled = true;
+        }
+        if (PAGE === "subnetting") sync();
+      });
+      function sync() {
+        const n = document.querySelector("nav.pn span:last-child");
+        if (n) n.style.display = M.includes("subnetting") ? "" : "none";
+      }
+    </script>
+  </head>
+  <body>
+    <div class="bar">
+      <div class="in">
+        <a href="index.html">⚡ CCNA Capstone Lab</a
+        ><span
+          style="
+            font-size: 13px;
+            color: var(--mut);
+            display: flex;
+            gap: 14px;
+            align-items: center;
+          "
+          >Step 12/14<a
+            href="ip-table.html"
+            style="color: var(--ac); text-decoration: none; font-weight: 700"
+            >IP table</a
+          ><a
+            href="grand-lab.pkt"
+            download
+            style="color: var(--ac); text-decoration: none; font-weight: 700"
+            >⬇ Download lab (.pkt)</a
+          ></span
+        >
+      </div>
+      <div class="pg"><i id="pgb"></i></div>
+    </div>
+    <main>
+      <div class="tag">Step 12</div>
+      <h1 class="t">AAA with RADIUS</h1>
+      <div class="card goal">
+        <b>Goal.</b> Make R1 and R2 check remote logins against the RADIUS
+        service on the server (172.16.1.10), with the local user database as a
+        safety fallback. This lab uses <b>authentication only</b>: no
+        authorization step.
+      </div>
+      <div class="card">
+        <b>Concept.</b> AAA stands for Authentication, Authorization and
+        Accounting; here we use only the first. <b>Authentication</b> answers
+        “who are you?”. With <code>aaa new-model</code> the old line passwords
+        are replaced by <b>method lists</b>, tried in order. <b>RADIUS</b> is a
+        central login server: the router (the RADIUS <i>client</i>) forwards the
+        username and password to it over UDP 1812, protected by a
+        <b>shared secret</b> configured on both sides. In
+        <code>group radius local</code> the router asks the server first and
+        uses the local database
+        <b>only if the server does not answer</b> (timeout). If the server
+        answers “reject”, the login fails; there is no fallback. Since there is
+        no authorization, a user who logs in lands in normal user mode and types
+        <code>enable</code> (Cisco123) to go further.
+      </div>
+      <div class="card pre">
+        <b>Before you start.</b> OSPF works and R1 can ping 172.16.1.10 (Step
+        10), ACLs are in place (Step 11) and SSH from PC4 works (Step 5). Keep a
+        console session open while changing AAA so a mistake cannot lock you
+        out.
+      </div>
+      <h2>Your tasks</h2>
+      <ol class="tk">
+        <li>
+          <b>Server first.</b> Click the Server → <b>Services</b> → <b>AAA</b>.
+          Turn the service <b>On</b>. Add two clients with ServerType
+          <b>Radius</b> and the secret <code>LabKey123</code>: <b>R1</b> with
+          Client IP 192.168.10.241 and <b>R2</b> with Client IP 172.16.1.1. (A
+          router sends RADIUS requests from the interface facing the server, so
+          use those interface addresses, not the management address.)
+        </li>
+        <li>
+          On the same page add a user in <b>User Setup</b>: username
+          <code>raduser</code>, password <code>Rad123</code>. This account
+          exists only on the server; <code>admin</code> exists only locally,
+          which lets you tell the two apart in tests.
+        </li>
+        <li>
+          On R1 and R2 point the router to the server: host 172.16.1.10 with key
+          <code>LabKey123</code>.
+        </li>
+        <li>Enable <code>aaa new-model</code>.</li>
+        <li>Create the default login method list: RADIUS.</li>
+        <li>Apply the lists: VTY lines use <code>default</code>.</li>
+        <li>
+          <b>Test RADIUS:</b> from PC4 run
+          <code>ssh -l raduser 192.168.10.225</code> (R1) and
+          <code>192.168.10.242</code> (R2). Password <code>Rad123</code> must
+          work; a wrong password must fail.
+        </li>
+        <li>
+          <b>Test the fallback:</b> turn the server’s AAA service <b>Off</b>,
+          wait for the timeout, then log in as <code>admin</code> /
+          <code>Admin123</code>. It works only now because the server stopped
+          answering. Turn AAA back On afterwards.
+        </li>
+      </ol>
+      <h2>Hints</h2>
+      <details>
+        <summary>Hint 1</summary>
+        <p>
+          Server says “access rejected” for no reason? Check the client IP: it
+          must match the interface the router uses to reach the server (R1 → its
+          G0/1 address, R2 → its G0/1 address), and the secret must match
+          exactly (case sensitive).
+        </p>
+      </details>
+      <details>
+        <summary>Hint 2</summary>
+        <p>
+          The router side is a single global command starting with
+          <code>radius-server host</code>, followed by the server IP and
+          <code>key</code>.
+        </p>
+      </details>
+      <details>
+        <summary>Hint 3</summary>
+        <p>
+          List syntax:
+          <code
+            >aaa authentication login &lt;list-name&gt; &lt;method1&gt;
+            &lt;method2&gt;</code
+          >. Methods are written <code>group radius</code> and
+          <code>local</code>, in that order.
+        </p>
+      </details>
+      <details>
+        <summary>Hint 4</summary>
+        <p>
+          A list called <code>default</code> is applied to every line
+          automatically; the <code>CONSOLE</code> list must be applied under
+          <code>line console 0</code> with
+          <code>login authentication CONSOLE</code>.
+        </p>
+      </details>
+      <h2>Verify</h2>
+      <div class="card wrap">
+        <table>
+          <tr>
+            <th>Command / test</th>
+            <th>Expected result</th>
+          </tr>
+          <tr>
+            <td><code>show running-config | include aaa|radius</code></td>
+            <td>
+              aaa new-model, both method lists and the radius-server host line
+            </td>
+          </tr>
+          <tr>
+            <td><code>ssh -l raduser 192.168.10.225</code> (PC4)</td>
+            <td>
+              Password Rad123 accepted; prompt is <code>R1&gt;</code> (user
+              mode)
+            </td>
+          </tr>
+          <tr>
+            <td>Same command with a wrong password</td>
+            <td>“Access denied”: the server rejected it, so no fallback</td>
+          </tr>
+          <tr>
+            <td><code>debug aaa authentication</code> then log in</td>
+            <td>
+              Messages show the RADIUS request being sent; stop with
+              <code>undebug all</code>
+            </td>
+          </tr>
+          <tr>
+            <td>Server AAA service Off, then <code>ssh -l admin ...</code></td>
+            <td>Delay, then login works through the local database</td>
+          </tr>
+        </table>
+      </div>
+      <button id="dn" class="btn" onclick="done(this)">
+        Mark step complete</button
+      ><a class="btn alt" href="aaa-solution.html"
+        >Stuck? See the full solution</a
+      >
+      <nav class="pn">
+        <span><a href="acls.html">← Access Control Lists</a></span
+        ><span><a href="final-check.html">Final Verification →</a></span>
+      </nav>
+    </main>
+  </body>
+</html>
